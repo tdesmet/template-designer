@@ -287,7 +287,7 @@
 Answer
 {% elsif notification.type == 'Comment' %}
 Comment
-{% endif %} &amp;sdot; {{notification.date | date: "MMM. d, yyyy" }}
+{% endif %} &amp;sdot; {{notification.date | date: "MMM. d, yyyy" | capitalize }}
                             &lt;/td&gt;
                           &lt;/tr&gt;
                           &lt;tr&gt;

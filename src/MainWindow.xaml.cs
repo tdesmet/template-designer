@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using DotLiquid;
-using template_designer.Properties;
 
 namespace template_designer
 {
@@ -15,15 +10,21 @@ namespace template_designer
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly ViewModel _viewModel;
         private dynamic _data;
-
 
         public MainWindow()
         {
             InitializeComponent();
-            _viewModel = new ViewModel();
-            DataContext = _viewModel;
+            GenerateTestData();
+            TemplateTextEditor.TextChanged += (sender, args) => RenderTemplate(TemplateTextEditor.Text);
+            TemplateTextEditor.Text = Properties.Resources.Digest;
+            TemplateTextEditor.WordWrap = true;
+            TemplateTextEditor.Options.HighlightCurrentLine = true;
+            TemplateTextEditor.Options.IndentationSize = 2;
+        }
+
+        private void GenerateTestData()
+        {
             var notification1 = new
             {
                 type = "Answer",
@@ -63,51 +64,19 @@ namespace template_designer
                 },
                 notifications = notifications
             };
-
-            _viewModel.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName.Equals("EmailTemplate"))
-                {
-                    RenderTemplate();
-                }
-            };
-            RenderTemplate();
         }
 
-        private void RenderTemplate()
+        private void RenderTemplate(string text)
         {
             try
             {
-                var template = DotLiquid.Template.Parse(_viewModel.EmailTemplate);
+                var template = DotLiquid.Template.Parse(text);
                 var rendered = template.Render(Hash.FromAnonymousObject(_data));
                 PreviewWindow.NavigateToString(rendered);
             }
             catch
             {
             }
-        }
-    }
-
-    public class ViewModel: INotifyPropertyChanged
-    {
-
-        private string _emailTemplate= Resources.Digest;
-
-        public string EmailTemplate
-        {
-            get { return _emailTemplate; }
-            set
-            {
-                _emailTemplate = value;
-                OnPropertyChanged();
-            }
-        }
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

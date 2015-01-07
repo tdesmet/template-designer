@@ -3,15 +3,29 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800" d:DataContext="{d:DesignData ViewModel}">
+        Title="MainWindow" Height="600" Width="800">
   <Grid>
-    <Grid.ColumnDefinitions><ColumnDefinition></ColumnDefinition>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition></ColumnDefinition>
+      <ColumnDefinition Width="Auto"></ColumnDefinition>
       <ColumnDefinition></ColumnDefinition>
     </Grid.ColumnDefinitions>
-    <Grid.RowDefinitions>
-      <RowDefinition></RowDefinition>
-    </Grid.RowDefinitions>
-    <TextBox x:Name="TemplateTextBox" Margin="10,10,10,10" Grid.Column="0" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Path=EmailTemplate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-    <WebBrowser x:Name="PreviewWindow" Grid.Column="1" Margin="10,10,10,10" />
+    <avalonEdit:TextEditor
+      Grid.Column="0" 
+      xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+      Name="TemplateTextEditor"
+      ShowLineNumbers="True"
+      SyntaxHighlighting="HTML"
+      FontFamily="Consolas"
+      FontSize="10pt"
+      />
+    <GridSplitter 
+      Grid.Column="1" 
+      Background="#FFABABAB" 
+      ShowsPreview="True"
+      Width="2"
+      VerticalAlignment="Stretch" 
+      HorizontalAlignment="Center"/>
+    <WebBrowser x:Name="PreviewWindow" Grid.Column="2" />
   </Grid>
 </Window>
