@@ -78,5 +78,10 @@ namespace template_designer
             {
             }
         }
+
+        private void PreviewWindow_Navigating(object sender, System.Windows.Navigation.NavigatingCancelEventArgs e)
+        {
+            if (e.Uri != null) e.Cancel = true;
+        }
     }
 }

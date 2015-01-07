@@ -26,6 +26,6 @@
       Width="2"
       VerticalAlignment="Stretch" 
       HorizontalAlignment="Center"/>
-    <WebBrowser x:Name="PreviewWindow" Grid.Column="2" />
+    <WebBrowser x:Name="PreviewWindow" Grid.Column="2" Navigating="PreviewWindow_Navigating"  />
   </Grid>
 </Window>
