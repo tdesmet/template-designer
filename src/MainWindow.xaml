@@ -3,29 +3,76 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
-        Title="Template editor" Height="600" Width="800">
+        Title="Template editor" Height="600" Width="800" Closing="Window_Closing">
+
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition></ColumnDefinition>
       <ColumnDefinition Width="Auto"></ColumnDefinition>
       <ColumnDefinition></ColumnDefinition>
     </Grid.ColumnDefinitions>
-    <avalonEdit:TextEditor
-      Grid.Column="0" 
-      xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
-      Name="TemplateTextEditor"
-      ShowLineNumbers="True"
-      SyntaxHighlighting="HTML"
-      FontFamily="Consolas"
-      FontSize="10pt"
-      />
+    <Grid
+        Grid.Column="0">
+      <Grid.RowDefinitions>
+        <RowDefinition></RowDefinition>
+        <RowDefinition Height="Auto"></RowDefinition>
+        <RowDefinition></RowDefinition>
+      </Grid.RowDefinitions>
+      <DockPanel
+          Grid.Row="0">
+        <ToolBarTray DockPanel.Dock="Top">
+          <ToolBar>
+            <Label FontWeight="Bold">Template :</Label>
+            <Button Content="New" Name="NewTemplateButton" Click="NewTemplateButton_Click"></Button>
+            <Button Content="Open" Name="OpenTemplateButton" Click="OpenTemplateButton_Click"></Button>
+            <Button Content="Save" Name="SaveTemplateButton" Click="SaveTemplateButton_Click"></Button>
+          </ToolBar>
+        </ToolBarTray>
+        <avalonEdit:TextEditor
+                xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+                Name="TemplateTextEditor"
+                ShowLineNumbers="True"
+                SyntaxHighlighting="HTML"
+                FontFamily="Consolas"
+                FontSize="10pt"/>
+      </DockPanel>
+      <GridSplitter 
+          Grid.Row="1"
+          Background="#FFABABAB" 
+          ShowsPreview="True"
+          Height="3"
+          VerticalAlignment="Center" 
+          HorizontalAlignment="Stretch"/>
+      <DockPanel 
+          Grid.Row="2">
+
+        <ToolBarTray DockPanel.Dock="Top">
+          <ToolBar>
+            <Label FontWeight="Bold">Test data :</Label>
+            <Button Content="New" Name="NewDataButton" Click="NewDataButton_Click"></Button>
+            <Button Content="Open" Name="OpenDataButton" Click="OpenDataButton_Click"></Button>
+            <Button Content="Save" Name="SaveDataButton" Click="SaveDataButton_Click"></Button>
+          </ToolBar>
+        </ToolBarTray>
+        <avalonEdit:TextEditor
+            xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+            Name="DataTextEditor"
+            ShowLineNumbers="True"
+            SyntaxHighlighting="JSON"
+            FontFamily="Consolas"
+            FontSize="10pt"/>
+      </DockPanel>
+    </Grid>
     <GridSplitter 
-      Grid.Column="1" 
-      Background="#FFABABAB" 
-      ShowsPreview="True"
-      Width="2"
-      VerticalAlignment="Stretch" 
-      HorizontalAlignment="Center"/>
-    <WebBrowser x:Name="PreviewWindow" Grid.Column="2" Navigating="PreviewWindow_Navigating"  />
+        Grid.Column="1" 
+        Background="#FFABABAB" 
+        ShowsPreview="True"
+        Width="3"
+        VerticalAlignment="Stretch" 
+        HorizontalAlignment="Center"/>
+    <WebBrowser 
+        x:Name="PreviewWindow" 
+        Grid.Column="2" 
+        Navigating="PreviewWindow_Navigating"  />
   </Grid>
 </Window>
