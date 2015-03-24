@@ -14,9 +14,9 @@
     <Grid
         Grid.Column="0">
       <Grid.RowDefinitions>
-        <RowDefinition></RowDefinition>
+        <RowDefinition Height="3*"></RowDefinition>
         <RowDefinition Height="Auto"></RowDefinition>
-        <RowDefinition></RowDefinition>
+        <RowDefinition Height="1*"></RowDefinition>
       </Grid.RowDefinitions>
       <DockPanel
           Grid.Row="0">
@@ -45,7 +45,6 @@
           HorizontalAlignment="Stretch"/>
       <DockPanel 
           Grid.Row="2">
-
         <ToolBarTray DockPanel.Dock="Top">
           <ToolBar>
             <Label FontWeight="Bold">Test data :</Label>
@@ -70,9 +69,33 @@
         Width="3"
         VerticalAlignment="Stretch" 
         HorizontalAlignment="Center"/>
-    <WebBrowser 
+
+    <Grid
+        Grid.Column="2">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="3*"></RowDefinition>
+        <RowDefinition Height="Auto"></RowDefinition>
+        <RowDefinition Height="1*"></RowDefinition>
+      </Grid.RowDefinitions>
+      <WebBrowser 
         x:Name="PreviewWindow" 
-        Grid.Column="2" 
+        Grid.Row="0" 
         Navigating="PreviewWindow_Navigating"  />
+      <GridSplitter 
+          Grid.Row="1"
+          Background="#FFABABAB" 
+          ShowsPreview="True"
+          Height="3"
+          VerticalAlignment="Center" 
+          HorizontalAlignment="Stretch"/>
+      <TextBox 
+        Grid.Row="2"
+        Name="Output"
+        IsReadOnly="True"
+        VerticalScrollBarVisibility="Visible"
+        HorizontalScrollBarVisibility="Visible" 
+        Background="#FFE6E7E8" 
+        ></TextBox>
+    </Grid>
   </Grid>
 </Window>

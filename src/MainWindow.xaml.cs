@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Windows;
 using System.Windows.Navigation;
 using DotLiquid;
@@ -16,22 +17,47 @@ namespace template_designer
     {
         private string _currentTemplateFileName;
         private string _currentDataFileName;
-
+        private readonly SynchronizationContext _syncContext;
+        Timer _timer ; 
         public MainWindow()
         {
+            _syncContext = SynchronizationContext.Current;
             InitializeComponent();
-            TemplateTextEditor.TextChanged += (sender, args) => RenderTemplate(TemplateTextEditor.Text, DataTextEditor.Text);
-            DataTextEditor.TextChanged += (sender, args) => RenderTemplate(TemplateTextEditor.Text, DataTextEditor.Text);
+            TemplateTextEditor.TextChanged += (sender, args) => RenderCallBack();
+            DataTextEditor.TextChanged += (sender, args) => RenderCallBack();
             TemplateTextEditor.WordWrap = true;
             TemplateTextEditor.Options.HighlightCurrentLine = true;
             TemplateTextEditor.Options.IndentationSize = 2;
+        }
+
+        private void ScheduleRenderTemplate()
+        {
+            if (_timer != null)
+            {
+                _timer.Change(400, Timeout.Infinite);
+            }
+            else
+            {
+                _timer = new Timer(_ => RenderCallBack(), null, 400, Timeout.Infinite);
+            }
+        }
+
+        private void RenderCallBack()
+        {
+            _timer = null;
+            _syncContext.Send(_ => RenderTemplate(TemplateTextEditor.Text, DataTextEditor.Text), null);
         }
 
         private void RenderTemplate(string text, string data)
         {
             try
             {
+                Output.Text = "";
                 var template = DotLiquid.Template.Parse(text);
+                if (string.IsNullOrWhiteSpace(data))
+                {
+                    data = "{}";
+                }
                 Dictionary<string, object> obj = JsonToDictionaryConverter.DeserializeJsonToDictionary(data);
                 dynamic parameters = Hash.FromDictionary(obj);
                 var rendered = template.Render(parameters);
@@ -39,7 +65,7 @@ namespace template_designer
             }
             catch (Exception exception)
             {
-                
+                Output.Text = exception.Message;
             }
         }
 
