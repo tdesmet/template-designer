@@ -83,7 +83,8 @@ namespace template_designer
             AskToSaveTemplate();
             var dialog = new OpenFileDialog
             {
-                CheckFileExists = true
+                CheckFileExists = true,
+                Filter = "Html files (*.htm, *.html)|*.htm;*.html|All files (*.*)|*.*"
             };
             var result = dialog.ShowDialog();
             if (!result.HasValue || !result.Value) return;
@@ -124,7 +125,11 @@ namespace template_designer
         {
             if (_currentTemplateFileName == null)
             {
-                var dialog = new SaveFileDialog {DefaultExt = ".html"};
+                var dialog = new SaveFileDialog
+                {
+                    DefaultExt = "html",
+                    Filter = "Html files (*.htm, *.html)|*.htm;*.html|All files (*.*)|*.*"
+                };
                 if (dialog.ShowDialog() ?? false)
                 {
                     _currentTemplateFileName = dialog.FileName;
@@ -167,7 +172,8 @@ namespace template_designer
             AskToSaveData();
             var dialog = new OpenFileDialog
             {
-                CheckFileExists = true
+                CheckFileExists = true,
+                Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*"
             };
             var result = dialog.ShowDialog();
             if (!result.HasValue || !result.Value) return;
@@ -185,7 +191,11 @@ namespace template_designer
         {
             if (_currentDataFileName == null)
             {
-                var dialog = new SaveFileDialog {DefaultExt = ".json"};
+                var dialog = new SaveFileDialog
+                {
+                    DefaultExt = "json",
+                    Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*"
+                };
                 if (dialog.ShowDialog() ?? false)
                 {
                     _currentDataFileName = dialog.FileName;
