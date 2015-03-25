@@ -34,18 +34,6 @@ namespace template_designer
             DataTextEditor.Encoding = Encoding.UTF8;
         }
 
-        private void ScheduleRenderTemplate()
-        {
-            if (_timer != null)
-            {
-                _timer.Change(400, Timeout.Infinite);
-            }
-            else
-            {
-                _timer = new Timer(_ => RenderCallBack(), null, 400, Timeout.Infinite);
-            }
-        }
-
         private void RenderCallBack()
         {
             _timer = null;
@@ -57,6 +45,11 @@ namespace template_designer
             try
             {
                 Output.Text = "";
+                if (text == null)
+                {
+                    text = " ";
+                }
+
                 var template = DotLiquid.Template.Parse(text);
                 if (string.IsNullOrWhiteSpace(data))
                 {
