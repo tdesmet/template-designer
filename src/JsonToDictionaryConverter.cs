@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json.Linq;
 
 namespace template_designer
@@ -7,57 +8,38 @@ namespace template_designer
     {
         public static Dictionary<string, object> DeserializeJsonToDictionary(string json)
         {
-
             var jObject = JObject.Parse(json);
 
-            var dict = ParseObject(jObject);
-
-
-            return dict;
+            return ParseJObject(jObject);
         }
 
-        private static Dictionary<string, object> ParseObject(JObject jObject)
+        private static Dictionary<string, object> ParseJObject(JObject jObject)
         {
-            var dict = new Dictionary<string, object>();
-            foreach (var property in jObject.Properties())
-            {
-                if (property.Value.Type == JTokenType.Array)
-                {
-                    dict.Add(property.Name, ParseArray(property.Value.ToObject<JArray>()));
-                }
-                else if (property.Value.Type == JTokenType.Object)
-                {
-                    dict.Add(property.Name, ParseObject(property.Value.ToObject<JObject>()));
-                }
-                else
-                {
-                    dict.Add(property.Name, property.Value.ToString());
-                }
-
-
-            }
-            return dict;
+            return jObject.Properties().ToDictionary(property => property.Name, property => ParseValue(property.Value));
         }
 
-        private static List<object> ParseArray(JArray value)
+        private static object ParseValue(JToken value)
         {
-            var list = new List<object>();
-            foreach (var child in value.Children())
+            switch (value.Type)
             {
-                if (child.Type == JTokenType.Array)
-                {
-                    list.Add(ParseArray(child.ToObject<JArray>()));
-                }
-                else if (child.Type == JTokenType.Object)
-                {
-                    list.Add(ParseObject(child.ToObject<JObject>()));
-                }
-                else
-                {
-                    list.Add(child.ToString());
-                }
+                case JTokenType.Array:
+                    return ParseJArray(value.ToObject<JArray>());
+                case JTokenType.Object:
+                    return ParseJObject(value.ToObject<JObject>());
+                case JTokenType.Boolean:
+                    return value.ToObject<bool>();
+                case JTokenType.Integer:
+                    return value.ToObject<int>();
+                case JTokenType.Float:
+                    return value.ToObject<float>();
+                default:
+                    return value.ToString();
             }
-            return list;
+        }
+
+        private static List<object> ParseJArray(JArray value)
+        {
+            return value.Children().Select(ParseValue).ToList();
         }
     }
 }
