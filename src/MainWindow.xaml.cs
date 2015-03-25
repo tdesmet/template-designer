@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Navigation;
@@ -28,6 +29,9 @@ namespace template_designer
             TemplateTextEditor.WordWrap = true;
             TemplateTextEditor.Options.HighlightCurrentLine = true;
             TemplateTextEditor.Options.IndentationSize = 2;
+
+            TemplateTextEditor.Encoding = Encoding.UTF8;
+            DataTextEditor.Encoding = Encoding.UTF8;
         }
 
         private void ScheduleRenderTemplate()
